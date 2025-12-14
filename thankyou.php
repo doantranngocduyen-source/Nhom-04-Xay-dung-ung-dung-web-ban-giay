@@ -1,11 +1,6 @@
 <?php 
-// LỖI 1: Sai tên thư mục (Thư mục đúng là 'includes' có chữ 's', ở đây viết thiếu)
-// Hậu quả: Web báo lỗi "Warning: include(include/db.php): failed to open stream..."
-include 'include/db.php';
-
-// LỖI 2: Sai dấu gạch chéo (Dùng Backslash '\' thay vì Forward slash '/')
-// Hậu quả: Chạy trên Windows (XAMPP) có thể vẫn được, nhưng up lên Hosting (Linux) là lỗi ngay lập tức.
-include 'includes\header.php';
+include 'includes/db.php';
+include 'includes/header.php';
 ?>
 
 <div class="colorlib-product">
