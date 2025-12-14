@@ -9,7 +9,7 @@ if (isset($_POST['register'])) {
 
     // Kiểm tra email trùng
     $check = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
-    if (mysqli_num_rows($check) == 0) {
+    if (mysqli_num_rows($check) > 0) {
         $error = "Email này đã được sử dụng!";
     } else {
         $sql = "INSERT INTO users (fullname, email, password) VALUES ('$fullname', '$email', '$password')";
