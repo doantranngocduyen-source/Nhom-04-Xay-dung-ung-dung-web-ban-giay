@@ -7,7 +7,7 @@ if (isset($_POST['login'])) {
     $password = $_POST['password'];
 
     // Tìm user trong database
-    $sql = "SELECT * FROM users WHERE emails = '$email'";
+    $sql = "SELECT * FROM users WHERE email = '$email'";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
@@ -73,4 +73,4 @@ if (isset($_POST['login'])) {
     </div>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?> 
