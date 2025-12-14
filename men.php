@@ -38,14 +38,15 @@ include 'includes/header.php';
         
         <div class="row row-pb-md">
             <?php
-            // --- TẠO LỖI Ở ĐÂY ---
-            // Lỗi: Viết sai lệnh SELECT thành SELEC
-            // Kết quả: Fatal Error hoặc Warning tùy phiên bản PHP
-            $sql = "SELEC * FROM products WHERE category = 'Men' ORDER BY id DESC";
+            // Lấy danh sách sản phẩm (Lọc theo category 'Men' nếu có)
+            // Nếu chưa có cột category thì lấy hết
+            $sql = "SELECT * FROM products WHERE category = 'Men' ORDER BY id DESC";
             
+            // Nếu bạn chưa thêm cột category thì dùng lệnh này:
+            // $sql = "SELECT * FROM products ORDER BY id DESC";
+
             $result = mysqli_query($conn, $sql);
 
-            // Đoạn này sẽ làm sập trang web vì $result bị sai do câu lệnh SQL trên
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
             ?>
