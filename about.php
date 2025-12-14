@@ -25,15 +25,6 @@ include 'includes/header.php';
             <div class="col-sm-6">
                 <div class="about-wrap">
                     <h2>Footwear the leading eCommerce Store around the Globe</h2>
-                    
-                    <p>Chúng tôi tự hào với: 
-                        <?php 
-                            // Lỗi: Gọi hàm chưa từng được định nghĩa
-                            // PHP sẽ không biết hàm này ở đâu và dừng chương trình ngay lập tức.
-                            echo tinh_nam_kinh_nghiem(); 
-                        ?> 
-                    năm hoạt động trong lĩnh vực giày dép.</p>
-                    
                     <p>The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.</p>
                     <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
                 </div>
