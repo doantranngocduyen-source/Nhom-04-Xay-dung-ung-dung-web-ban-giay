@@ -7,18 +7,11 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
 
 // Truy vấn thông tin sản phẩm
 $sql = "SELECT * FROM products WHERE id = $id";
+$result = mysqli_query($conn, $sql);
+$product = mysqli_fetch_assoc($result);
 
-// LỖI 1: Quên thực thi câu lệnh truy vấn (mysqli_query)
-// Dòng dưới này gán thẳng string SQL vào biến $result, chứ chưa chạy query.
-// Hậu quả: Bên dưới hàm mysqli_fetch_assoc sẽ báo lỗi vì tham số truyền vào không phải là object mysql.
-$result = $sql; 
-
-// Đúng ra phải là: $result = mysqli_query($conn, $sql);
-// Nếu sửa dòng trên, hãy cẩn thận dòng dưới này, mình đã đổi tên biến $product thành $row để troll
-$row = mysqli_fetch_assoc($result); 
-// (Lưu ý: Bên dưới HTML mình vẫn dùng $product, nên sẽ báo lỗi Undefined variable $product)
-
-if (!$row) { // Đã sửa $product thành $row
+// Nếu không tìm thấy sản phẩm thì báo lỗi
+if (!$product) {
     echo "<div class='container p-5 text-center'><h3>Sản phẩm không tồn tại!</h3><a href='index.php' class='btn btn-primary'>Về trang chủ</a></div>";
     include 'footer.php';
     exit();
@@ -26,10 +19,11 @@ if (!$row) { // Đã sửa $product thành $row
 ?>
 
 <style>
+    
     /* Style cho ô Size khi được chọn (Active) */
     .product-desc .size-wrap .block-26 ul li.active a {
-        background: #000 !important;
-        color: #fff !important;
+        background: #000 !important; /* Màu nền đen */
+        color: #fff !important;      /* Chữ trắng */
         border-color: #000 !important;
     }
 </style>
@@ -51,10 +45,7 @@ if (!$row) { // Đã sửa $product thành $row
                 <div class="product-entry border">
                     <a href="#" class="prod-img">
                         <?php 
-                            // LỖI 2: Sai tên thư mục ảnh (thư mục đúng là 'uploads', ở đây viết thiếu chữ 's')
-                            // Hậu quả: Ảnh không bao giờ hiện, chỉ hiện ảnh lỗi fallback.
-                            $img_path = "upload/" . $product['image']; 
-                            
+                            $img_path = "uploads/" . $product['image'];
                             if(!empty($product['image']) && file_exists($img_path)) {
                                 echo '<img src="'.$img_path.'" class="img-fluid" alt="'.$product['name'].'">';
                             } else {
@@ -129,7 +120,7 @@ if (!$row) { // Đã sửa $product thành $row
                             <div class="tab-pane border fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
                               <div class="row">
                                    <div class="col-md-12">
-                                        <h3 class="head">Chưa có đánh giá nào.</h3>
+                                       <h3 class="head">Chưa có đánh giá nào.</h3>
                                    </div>
                                </div>
                             </div>
@@ -142,19 +133,21 @@ if (!$row) { // Đã sửa $product thành $row
     </div>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>
 
 <script>
     $(document).ready(function(){
-        // LỖI 3: Sai Selector jQuery
-        // Class đúng là "block-26", mình sửa thành "block-266" (thừa số 6)
-        // Hậu quả: Bấm vào chọn size nhưng giao diện không đổi màu, người dùng tưởng web bị đơ.
-        $(".block-266 ul li").click(function(e){
-            e.preventDefault(); 
+        // Xử lý chọn Size
+        $(".block-26 ul li").click(function(e){
+            e.preventDefault(); // Ngăn thẻ a chuyển trang
             
+            // 1. Xóa class 'active' ở tất cả các ô size khác
             $(".block-26 ul li").removeClass("active");
+            
+            // 2. Thêm class 'active' vào ô (thẻ li) vừa bấm
             $(this).addClass("active");
             
+            // (Tùy chọn) Lấy giá trị size để in ra console kiểm tra
             var selectedSize = $(this).find('a').text();
             console.log("Đã chọn size: " + selectedSize);
         });
