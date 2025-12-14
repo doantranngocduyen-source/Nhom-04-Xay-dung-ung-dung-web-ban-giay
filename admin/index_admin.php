@@ -2,13 +2,8 @@
 include $_SERVER['DOCUMENT_ROOT'] . '/Nhom-04-Xay-dung-ung-dung-web-ban-giay/includes/db.php';
 include 'includes/admin_header.php';
 
-// --- ĐÂY LÀ CHỖ CÓ LỖI ---
-// Mục tiêu: Tính TỔNG TIỀN (SUM)
-// Thực tế: Đang dùng hàm COUNT (Đếm số dòng)
-// Hậu quả: Thay vì hiện "50,000,000 đ", nó sẽ hiện số "5" (nếu có 5 đơn hàng).
-$sql_money = "SELECT COUNT(total_money) as total FROM orders"; 
-// -------------------------
-
+// Tổng doanh thu
+$sql_money = "SELECT SUM(total_money) as total FROM orders";
 $res_money = mysqli_query($conn, $sql_money);
 $row_money = mysqli_fetch_assoc($res_money);
 $total_money = $row_money['total'] ? $row_money['total'] : 0;
@@ -25,7 +20,8 @@ $res_prod = mysqli_query($conn, $sql_prod);
 $row_prod = mysqli_fetch_assoc($res_prod);
 $total_prod = $row_prod['total'];
 
-// Đơn hàng chờ xử lý / Khách hàng
+// Đơn hàng chờ xử lý (Pending) - Giả sử bạn chưa làm status thì đếm tạm cái gì đó
+// Hoặc đếm số lượng User
 $sql_user = "SELECT COUNT(*) as total FROM users WHERE role=0";
 $res_user = mysqli_query($conn, $sql_user);
 $row_user = mysqli_fetch_assoc($res_user);
