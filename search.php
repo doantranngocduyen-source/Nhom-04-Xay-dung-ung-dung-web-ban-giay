@@ -32,28 +32,28 @@ $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
         <div class="row row-pb-md">
             <?php
             if ($keyword) {
+                // Xử lý từ khóa để tránh lỗi SQL (quan trọng)
                 $safe_keyword = mysqli_real_escape_string($conn, $keyword);
                 
-                // LỖI 1: Thiếu dấu nháy đơn '' bao quanh chuỗi tìm kiếm trong SQL
-                // Hậu quả: Nếu tìm chữ (vd: Nike) sẽ báo lỗi SQL Syntax. Nếu tìm số thì may ra chạy được.
-                $sql = "SELECT * FROM products WHERE name LIKE %$safe_keyword% ORDER BY id DESC"; 
-                
+                // Câu lệnh tìm kiếm: Tìm tên sản phẩm CÓ CHỨA từ khóa
+                $sql = "SELECT * FROM products WHERE name LIKE '%$safe_keyword%' ORDER BY id DESC";
                 $result = mysqli_query($conn, $sql);
 
-                // Nếu câu lệnh SQL trên lỗi, dòng này sẽ warning vì $result là false
-                if(mysqli_num_rows($result) > 0){
-                    
-                    // LỖI 2: "Ăn mất" dòng đầu tiên
-                    // Dòng dưới đây lấy ra sản phẩm đầu tiên nhưng KHÔNG in ra (vì chưa vào vòng lặp).
-                    // Hậu quả: Tìm thấy 5 đôi giày nhưng chỉ hiện 4 đôi (mất đôi mới nhất).
-                    $check_row = mysqli_fetch_assoc($result); 
+                // --- TÍNH NĂNG THÔNG MINH: Nếu chỉ tìm thấy ĐÚNG 1 sản phẩm -> Vào thẳng trang chi tiết luôn ---
+                if (mysqli_num_rows($result) == 1) {
+                    $one_product = mysqli_fetch_assoc($result);
+                    echo "<script>window.location='product-detail.php?id=" . $one_product['id'] . "';</script>";
+                    exit();
+                }
+                // -----------------------------------------------------------------------------------------------
 
+                // Nếu có kết quả thì hiển thị ra
+                if(mysqli_num_rows($result) > 0){
                     while ($row = mysqli_fetch_assoc($result)) {
             ?>
                 <div class="col-lg-3 mb-4 text-center">
                     <div class="product-entry border">
-                        <a href="product-detail.php?id=<?php echo $product['id']; ?>" class="prod-img">
-                            
+                        <a href="product-detail.php?id=<?php echo $row['id']; ?>" class="prod-img">
                             <img src="uploads/<?php echo $row['image']; ?>" class="img-fluid" alt="<?php echo $row['name']; ?>" style="height: 200px; object-fit: cover;">
                         </a>
                         <div class="desc">
@@ -66,14 +66,17 @@ $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
                     </div>
                 </div>
             <?php 
-                    } // Kết thúc while
+                    } // Kết thúc vòng lặp while
                 } else {
+                    // Nếu không tìm thấy gì
                     echo "<div class='col-12 text-center'>
                             <h3 class='text-muted'>Rất tiếc, không tìm thấy sản phẩm nào!</h3>
+                            <p>Hãy thử tìm bằng từ khóa khác (ví dụ: 'Adidas', 'Nike'...).</p>
                             <a href='index.php' class='btn btn-primary'>Về trang chủ</a>
                           </div>";
                 }
             } else {
+                // Nếu người dùng vào trang này mà chưa nhập gì
                 echo "<div class='col-12 text-center'><p>Vui lòng nhập tên sản phẩm vào ô tìm kiếm ở trên.</p></div>";
             }
             ?>
