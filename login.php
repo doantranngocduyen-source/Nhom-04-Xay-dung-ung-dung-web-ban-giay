@@ -1,6 +1,7 @@
+
 <?php 
 include 'includes/db.php';
-include 'includes/header.php'; 
+include 'includes/header.php';
 
 if (isset($_POST['login'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
