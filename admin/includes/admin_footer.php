@@ -30,14 +30,14 @@
         </div>
     </div>
 
-    <script src="/web_ban_giay/admin/assets/vendor/jquery/jquery.min.js"></script>
-    <script src="/web_ban_giay/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/Nhom-04-Xay-dung-ung-dung-web-ban-giay/admin/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/Nhom-04-Xay-dung-ung-dung-web-ban-giay/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <script src="/web_ban_giay/admin/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/Nhom-04-Xay-dung-ung-dung-web-ban-giay/admin/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <script src="/web_ban_giay/admin/assets/js/sb-admin-2.min.js"></script>
+    <script src="/Nhom-04-Xay-dung-ung-dung-web-ban-giay/admin/assets/js/sb-admin-2.min.js"></script>
 
-    <script src="/web_ban_giay/admin/assets/vendor/chart.js/Chart.min.js"></script>
+    <script src="/Nhom-04-Xay-dung-ung-dung-web-ban-giay/admin/assets/vendor/chart.js/Chart.min.js"></script>
     
     </body>
 
