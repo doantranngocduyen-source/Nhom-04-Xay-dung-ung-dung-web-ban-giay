@@ -1,40 +1,27 @@
 <?php
-// LỖI 1: Đường dẫn tương đối sai.
-// File này nằm trong folder 'admin', nhưng lại gọi include như đang ở root.
-// Hậu quả: Báo lỗi "Failed to open stream" và trang trắng xóa.
-include 'includes/db.php'; 
+include $_SERVER['DOCUMENT_ROOT'] . '/Nhom-04-Xay-dung-ung-dung-web-ban-giay/includes/db.php';
 include 'includes/admin_header.php';
 
 // BẢO VỆ ADMIN
-// LỖI 2: Logic sai toán tử AND/OR (&& thay vì ||)
-// Ý định: Nếu (không có session) HOẶC (không phải admin) thì đuổi ra.
-// Thực tế code dưới: Nếu (không có session) VÀ (không phải admin) mới đuổi.
-// Hậu quả: Hacker chỉ cần đăng nhập bằng tài khoản thường (role=0) là vào được trang Admin!
-if (!isset($_SESSION['user_id']) && $_SESSION['user_role'] != 1) {
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
     header("Location: login.php");
-    // LỖI 3: Thiếu exit();
-    // Hậu quả: Dù có lệnh chuyển hướng header, nhưng code bên dưới vẫn chạy tiếp. 
-    // Hacker có thể dùng tool chặn redirect để xem nội dung trang này.
+    exit();
 }
 
 // XỬ LÝ XÓA SẢN PHẨM
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     
-    // Xóa ảnh cũ
+    // Xóa ảnh cũ đi cho đỡ rác host (Optional)
     $sql_img = "SELECT image FROM products WHERE id=$id";
     $res_img = mysqli_query($conn, $sql_img);
     if($row = mysqli_fetch_assoc($res_img)){
-        // Lỗi logic đường dẫn: Đang ở admin mà gọi uploads/ thì nó tìm ở admin/uploads (không có).
-        $path = "uploads/" . $row['image']; 
-        if(file_exists($path)) unlink($path);
+        $path = "uploads/" . $row['image'];
+        if(file_exists($path)) unlink($path); // Xóa file ảnh
     }
 
-    // LỖI 4: Sai tên bảng (Table)
-    // Bảng đúng là 'products' (có s), mình sửa thành 'product'.
-    // Hậu quả: Bấm xóa xong báo thành công ảo, nhưng dữ liệu vẫn còn y nguyên.
-    mysqli_query($conn, "DELETE FROM product WHERE id=$id"); 
-    
+    // Xóa trong database
+    mysqli_query($conn, "DELETE FROM products WHERE id=$id");
     echo "<script>alert('Đã xóa sản phẩm!'); window.location='products.php';</script>";
 }
 ?>
@@ -80,17 +67,14 @@ if (isset($_GET['delete'])) {
                     <tr>
                         <td><?php echo $row['id']; ?></td>
                         <td>
-                            <img src="uploads/<?php echo $row['image']; ?>" style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;">
+                            <img src="../uploads/<?php echo $row['image']; ?>" style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px;">
                         </td>
                         <td class="font-weight-bold text-left"><?php echo $row['name']; ?></td>
-                        
-                        <td class="text-danger"><?php echo number_format($row['cost']); ?> đ</td>
-                        
+                        <td class="text-danger"><?php echo number_format($row['price']); ?> đ</td>
                         <td><small><?php echo substr($row['description'], 0, 50); ?>...</small></td>
                         <td>
                             <a href="edit_product.php?id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">Sửa</a>
-                            
-                            <a href="products.php?delete=" class="btn btn-danger btn-sm" onclick="return confirm('Xóa giày này là mất luôn đó nha?');">Xóa</a>
+                            <a href="products.php?delete=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Xóa giày này là mất luôn đó nha?');">Xóa</a>
                         </td>
                     </tr>
                 <?php 
