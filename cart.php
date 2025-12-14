@@ -5,7 +5,7 @@ include 'includes/header.php';
 // --- PHẦN 1: XỬ LÝ THÊM/XÓA GIỎ HÀNG ---
 
 // 1. Thêm sản phẩm vào giỏ
-if (isset($_GET['ad_id'])) {
+if (isset($_GET['add_id'])) {
     $id = $_GET['add_id'];
     // Nếu trong giỏ đã có món này rồi thì tăng số lượng lên 1
     if (isset($_SESSION['cart'][$id])) {
