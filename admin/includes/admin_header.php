@@ -1,6 +1,6 @@
 <?php
 // Kết nối Database (Lùi ra 1 cấp để tìm file db.php trong includes)
-include $_SERVER['DOCUMENT_ROOT'] . '/web_ban_giay/includes/db.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/Nhom-04-Xay-dung-ung-dung-web-ban-giay/includes/db.php';
 
 // BẢO VỆ ADMIN: Nếu không phải admin thì đá về trang login
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
@@ -20,10 +20,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
 
     <title>Admin - Shop Giày</title>
 
-    <link href="/web_ban_giay/admin/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/Nhom-04-Xay-dung-ung-dung-web-ban-giay/admin/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <link href="/web_ban_giay/admin/assets/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/Nhom-04-Xay-dung-ung-dung-web-ban-giay/admin/assets/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -108,7 +108,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <?php echo isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Admin'; ?>
                                 </span>
-                                <img class="img-profile rounded-circle" src="/web_ban_giay/admin/assets/img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="/Nhom-04-Xay-dung-ung-dung-web-ban-giay/admin/assets/img/undraw_profile.svg">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
