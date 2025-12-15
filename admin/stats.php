@@ -8,17 +8,23 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] != 1) {
     exit();
 }
 
+// --- ĐÃ BỎ BỘ LỌC THỜI GIAN ---
+// Mặc định là thống kê tất cả
 $title_time = "Toàn thời gian";
 
-// 1. TÍNH TỔNG DOANH THU & ĐƠN HÀNG
+
+// 1. TÍNH TỔNG DOANH THU & ĐƠN HÀNG (TẤT CẢ)
 $sql_revenue = "SELECT SUM(total_money) as total_money, COUNT(id) as total_orders 
                 FROM orders WHERE status = 2"; 
+// Lưu ý: Chỉ tính đơn hàng thành công (status = 2)
+
 $res_revenue = mysqli_query($conn, $sql_revenue);
 $stat = mysqli_fetch_assoc($res_revenue);
 $total_money = $stat['total_money'] ? $stat['total_money'] : 0;
 $total_orders = $stat['total_orders'];
 
-// 2. TOP 5 BÁN CHẠY
+
+// 2. TÌM TOP 5 SẢN PHẨM BÁN CHẠY NHẤT (TỪ TRƯỚC ĐẾN NAY)
 $sql_best = "SELECT p.name, p.image, SUM(od.quantity) as total_sold, SUM(od.price * od.quantity) as total_earn
              FROM order_details od
              JOIN products p ON od.product_id = p.id
@@ -29,7 +35,8 @@ $sql_best = "SELECT p.name, p.image, SUM(od.quantity) as total_sold, SUM(od.pric
              LIMIT 5";
 $res_best = mysqli_query($conn, $sql_best);
 
-// 3. SẢN PHẨM Ế
+
+// 3. TÌM SẢN PHẨM "Ế" (CHƯA TỪNG BÁN ĐƯỢC CÁI NÀO)
 $sql_bad = "SELECT * FROM products 
             WHERE id NOT IN (
                 SELECT DISTINCT product_id FROM order_details od 
@@ -54,9 +61,7 @@ $res_bad = mysqli_query($conn, $sql_bad);
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Tổng Doanh Thu</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                
-                                <?php number_format($total_money); ?> VNĐ
-
+                                <?php echo number_format($total_money); ?> VNĐ
                             </div>
                         </div>
                         <div class="col-auto">
